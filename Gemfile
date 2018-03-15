@@ -31,6 +31,7 @@ gem 'csv'
 gem 'omniauth-google-oauth2', :git => "https://github.com/zquestz/omniauth-google-oauth2.git"
 gem 'rubysl-open-uri', '2.0.0'
 gem 'figaro'
+ruby "2.5.0"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
