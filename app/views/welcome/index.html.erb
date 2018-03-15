@@ -1,0 +1,9 @@
+<% if current_user.user_type == "google" %>
+  Signed in as <strong><%= current_user.name %></strong>!<br/>
+  <%= link_to "View Your Imported Google Contacts", '/contacts/show', class: "display-contact" %><br/>
+<% else %>
+  Signed in as <strong><%= current_user.username %></strong>!<br/>
+  <%= link_to "Add Your Contacts", '/contacts/create', class: "create-contact" %><br/>
+  <%= link_to "View Your Contacts", '/contacts/show', class: "display-contact" %><br/>
+<% end %>
+<%= link_to "Back to Home", "/", class: "home-id" %>

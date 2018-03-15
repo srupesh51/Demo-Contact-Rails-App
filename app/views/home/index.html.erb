@@ -1,0 +1,62 @@
+<div class="container">
+            <nav class="navbar navbar-expand-md navbar-light bg-light btco-hover-menu">
+                <a class="navbar-brand" href="/">Contact Manager</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                       <% if current_user %>
+                          <li class="nav-item active">
+                              <a class="nav-link" href="/welcome/index">Home <span class="sr-only">(current)</span></a>
+                          </li>
+                          <% if current_user.user_type == 'normal' %>
+                            <li class="nav-item active">
+                              <a class="nav-link" href="/user/logout">Logout</a>
+                            </li>
+                          <% else %>
+                          <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Logout From
+                              </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <li><a class="dropdown-item dropdown-toggle" href="/">Google</a>
+                                  <ul class="dropdown-menu">
+                                      <li>
+                                        <%= link_to image_tag("oauth_google_sign_out_oauth2.png"), '/user/logout', id: "sign_out" %>
+                                      </li>
+                                  </ul>
+                              </li>
+                            </ul>
+                          </li>
+                          <% end %>
+                        <% else %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Login As
+                            </a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item dropdown-toggle" href="/">Normal User</a>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/login">Login</a></li>
+                                        <li><a class="dropdown-item" href="/user/signup">SignUp</a></li>
+                                    </ul> </li>
+                                    <li><a class="dropdown-item dropdown-toggle" href="/">Google User</a>
+                                      <ul class="dropdown-menu">
+                                          <li>
+                                            <%= link_to image_tag("oauth_google_sign_in_oauth2.png"), '/auth/google_oauth2/', id: "sign_in" %>
+                                          </li>
+                                      </ul> </li>
+                                    </ul>
+                                  </li>
+                            <% end %>
+                        </ul>
+                </div>
+            </nav>
+
+            <div class="jumbotron">
+                <h1>Contact Manager Web App</h1>
+                <p>You can view your contacts from anywhere around the world</p>
+            </div>
+
+        </div>

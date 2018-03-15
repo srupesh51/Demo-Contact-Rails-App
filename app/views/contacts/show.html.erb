@@ -1,0 +1,521 @@
+<%= link_to "Back to Home", "/", class: "home-id" %>
+<% if flash[:error] %>
+<div class="alert alert-warning">
+  <%= flash[:error] %>
+    <%= link_to "Please Add Your Contacts in this link", '/contacts/create', class: "create-contact" %>
+ </div>
+  <% else %>
+  <h1>Contacts</h1>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <% if current_user.user_type == "normal" %>
+        <th>Edit</th>
+        <th>Delete</th>
+        <% end %>
+        <th>Export As CSV </th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile Number</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Street</th>
+        <th>Region</th>
+        <th>Country</th>
+        <th>Postal Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @contacts.each do |contact| %>
+        <tr>
+        <% if current_user.user_type == "normal" %>
+          <td> <%= link_to 'Edit', contacts_edit_path(:contact => contact[:contact_id]), class: 'btn btn-info btn-xs' %></td>
+          <td> <%= link_to 'Delete', contacts_delete_path(:contact => contact[:contact_id]),
+          data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %></td>
+        <% end %>
+          <td> <%= link_to "Export As CSV", contacts_show_path(format: "csv") %> </td>
+          <td>
+            <% if contact.name.nil? || contact.name.empty? %>
+              <h1> Sorry! No Name is available for this particular contact </h1>
+            <% else %>
+                <%= contact.name %>
+            <% end %>
+          </td>
+          <td>
+            <% if contact.email.nil? || contact.email.empty? %>
+              <h1> Sorry! No Email is available for this particular contact </h1>
+            <% else %>
+                <%= contact.email %>
+            <% end %>
+          </td>
+          <td>
+            <% if contact[:phone_number] == nil || contact[:phone_number].empty? %>
+              <h1> Sorry! No phoneNumber is available for this particular contact </h1>
+            <% else %>
+             <select>
+               <% contact[:phone_number].each do |phone_number| %>
+                     <option><%= phone_number %></option>
+               <% end %>
+              </select>
+            <% end %>
+          </td>
+          <td>
+            <% if contact[:address] == nil || contact[:address].empty? %>
+              <h1> Sorry! No Address is available for this particular contact </h1>
+            <% else %>
+             <select>
+                <% contact[:address].each do |address| %>
+                      <option><%= address %></option>
+                <% end %>
+              </select>
+            <% end %>
+          </td>
+          <td>
+            <% if contact.city == nil || contact.city.empty? %>
+              <h1> Sorry! No data for City is available for this particular contact </h1>
+            <% else %>
+            <%= contact.city %>
+            <% end %>
+          </td>
+          <td>
+            <% if contact.street == nil || contact.street.empty? %>
+              <h1> Sorry! No data for Street is available for this particular contact </h1>
+            <% else %>
+              <%= contact.street %>
+            <% end %>
+         </td>
+          <td>
+            <% if contact.region == nil || contact.region.empty? %>
+              <h1> Sorry! No data for Region is available for this particular contact </h1>
+            <% else %>
+              <%= contact.region %>
+            <% end %>
+          </td>
+          <td>
+            <% if contact.country == nil || contact.country.empty? %>
+              <h1> Sorry! No data for Country is available for this particular contact </h1>
+            <% else %>
+              <%= contact.country %>
+            <% end %>
+          </td>
+          <td>
+            <% if contact.postal_code == nil || contact.postal_code.empty? %>
+              <h1> Sorry! No data for Postal Code is available for this particular contact </h1>
+            <% else %>
+              <%= contact.postal_code %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <form class="needs-validation" novalidate action="filter" method="post" name="contact_form" autocomplete="off">
+   <% if exists %>
+    <div class="form-group row">
+      <div class="offset-sm-2 col-sm-10">
+          <% delete_filter_cache %>
+          <h1> Click on the button below to reset your search options</h1>
+          <%= button_to 'Reset To Defaults', contacts_reset_path, params: { reset_model: true }, class:"btn btn-primary reset" %>
+        </div>
+     </div>
+      <% else %>
+          <h1> Please select any one of the search options below(eg: name, email, etc) </h1>
+          <div class="form-check ck" id="check1">
+  <input class="form-check-input" name="filter_option" type="radio" id="radio100">
+  <label class="form-check-label" for="radio100">Name</label>
+  </div>
+
+  <div class="form-check ck" id="check2">
+    <input class="form-check-input" name="filter_option" type="radio" id="radio101">
+    <label class="form-check-label" for="radio101">Email</label>
+  </div>
+
+  <div class="form-check ck" id="check3">
+    <input class="form-check-input" name="filter_option" type="radio" id="radio101">
+    <label class="form-check-label" for="radio101">Mobile</label>
+  </div>
+
+  <div class="form-check ck" id="check4">
+    <input class="form-check-input" name="filter_option" type="radio" id="radio102">
+    <label class="form-check-label" for="radio102">Address</label>
+  </div>
+
+  <div class="form-check ck" id="check5">
+  <input class="form-check-input" name="filter_option" type="radio" id="radio100">
+  <label class="form-check-label" for="radio100">City</label>
+  </div>
+
+  <div class="form-check ck" id="check6">
+    <input class="form-check-input" name="filter_option" type="radio" id="radio101">
+    <label class="form-check-label" for="radio101">Street</label>
+  </div>
+
+  <div class="form-check ck" id="check7">
+    <input class="form-check-input" name="filter_option" type="radio" id="radio101">
+    <label class="form-check-label" for="radio101">Region</label>
+  </div>
+
+  <div class="form-check ck" id="check8">
+    <input class="form-check-input" name="filter_option" type="radio" id="radio102">
+    <label class="form-check-label" for="radio102">Country</label>
+  </div>
+  <div class="form-check ck" id="check9">
+      <input class="form-check-input" name="filter_option" type="radio" id="radio102">
+      <label class="form-check-label" for="radio102">Postal Code</label>
+  </div>
+  <div class="form-check ck" id="check10">
+      <input class="form-check-input" name="filter_option" type="radio" id="radio102">
+      <label class="form-check-label" for="radio102">None</label>
+  </div>
+  <div class="form-group row" id="text1">
+  <label class="col-sm-2 col-form-label validationCustom01">Name</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="validationCustom01" name="name" placeholder="Name" required>
+    <div class="invalid-feedback">
+      Please choose a Name.
+    </div>
+  </div>
+  </div>
+  <div class="form-group row" id="text2">
+  <label class="col-sm-2 col-form-label validationCustom02">Email</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="validationCustom02" name="email" placeholder="Email" required>
+    <div class="invalid-feedback">
+      Please choose a Email.
+    </div>
+  </div>
+  </div>
+  <div class="form-group row" id="text3">
+  <label class="col-sm-2 col-form-label">Mobile</label>
+  <select class="custom-select progControlSelect2" multiple="true" id="validationCustom10" name="phone_number[]" required>
+    <% @contacts.each do |contact| %>
+    <% contact[:phone_number].each do |phone_number| %>
+          <option><%= phone_number %> </option>
+    <% end %>
+    <% end %>
+    </select>
+    <div class="invalid-feedback">Please choose a Mobile.</div>
+  </div>
+  <div class="form-group row" id="text4">
+  <label class="col-sm-2 col-form-label">Address</label>
+  <select class="custom-select progControlSelect3" multiple="true" id="validationCustom11" name="address[]" required>
+    <% @contacts.each do |contact| %>
+    <% contact[:address].each do |address| %>
+          <option><%= address %> </option>
+    <% end %>
+    <% end %>
+  </select>
+  <div class="invalid-feedback">
+    Please choose a Address.
+  </div>
+  </div>
+  <div class="form-group row" id="text5">
+  <label class="col-sm-2 col-form-label validationCustom05">City</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="validationCustom05" name="city" placeholder="City" required>
+    <div class="invalid-feedback">
+      Please choose a City.
+    </div>
+  </div>
+  </div>
+  <div class="form-group row" id="text6">
+  <label class="col-sm-2 col-form-label validationCustom06">Street</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="validationCustom06" name="street" placeholder="Street" required>
+    <div class="invalid-feedback">
+      Please choose a Street.
+    </div>
+  </div>
+  </div>
+  <div class="form-group row" id="text7">
+  <label class="col-sm-2 col-form-label validationCustom07">Region</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="validationCustom07" name="region" placeholder="Region" required>
+    <div class="invalid-feedback">
+      Please choose a Region.
+    </div>
+  </div>
+  </div>
+  <div class="form-group row" id="text8">
+  <label class="col-sm-2 col-form-label validationCustom08">Country</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="validationCustom08" name="country" placeholder="Country" required>
+    <div class="invalid-feedback">
+      Please choose a Country.
+    </div>
+  </div>
+  </div>
+  <div class="form-group row" id="text9">
+  <label class="col-sm-2 col-form-label validationCustom09">Postal Code</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="validationCustom09" name="postal_code" placeholder="Postal Code" required>
+    <div class="invalid-feedback">
+      Please choose a Postal Code.
+    </div>
+  </div>
+  </div>
+  <div class="form-group row">
+  <div class="offset-sm-2 col-sm-10">
+    <button type="submit" class="btn btn-primary" id="submit">Filter Your Contacts</button>
+  </div>
+  </div>
+<% end %>
+</form>
+<% end %>
+<script type="text/javascript" >
+$(document).ready(function() {
+  $(".row#text1").hide();
+  $(".row#text2").hide();
+  $(".row#text3").hide();
+  $(".row#text4").hide();
+  $(".row#text5").hide();
+  $(".row#text6").hide();
+  $(".row#text7").hide();
+  $(".row#text8").hide();
+  $(".row#text9").hide();
+  $(".row .btn-primary#submit").hide();
+  $('.ck#check1').click(function(){
+    $(".row#text1").show();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom01").attr("required", true);
+    });
+  });
+  $('.ck#check2').click(function(){
+    $(".row#text2").show();
+    $(".row#text1").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom02").attr("required", true);
+    });
+  });
+  $('.ck#check3').click(function(){
+    $(".row#text3").show();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom10").attr("required", true);
+    });
+  $(".progControlSelect2").select2({
+
+  });
+});
+  $('.ck#check4').click(function(){
+    $(".row#text4").show();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom11").attr("required", true);
+    });
+    $(".progControlSelect3").select2({
+    });
+  });
+  $('.ck#check5').click(function(){
+    $(".row#text5").show();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom05").attr("required", true);
+    });
+  });
+  $('.ck#check6').click(function(){
+    $(".row#text6").show();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom06").attr("required", true);
+    });
+  });
+  $('.ck#check7').click(function(){
+    $(".row#text7").show();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text8").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom07").attr("required", true);
+    });
+  });
+  $('.ck#check8').click(function(){
+    $(".row#text8").show();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text9").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $('#validationCustom09').removeAttr('required')
+      $("#validationCustom08").attr("required", true);
+    });
+  });
+  $('.ck#check9').click(function(){
+    $(".row#text9").show();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row .btn-primary#submit").show();
+    $(".row .btn-primary#submit").click(function(){
+      $('#validationCustom10').removeAttr('required')
+      $('#validationCustom03').removeAttr('required')
+      $('#validationCustom02').removeAttr('required')
+      $('#validationCustom01').removeAttr('required')
+      $('#validationCustom04').removeAttr('required')
+      $('#validationCustom05').removeAttr('required')
+      $('#validationCustom11').removeAttr('required')
+      $('#validationCustom06').removeAttr('required')
+      $('#validationCustom08').removeAttr('required')
+      $('#validationCustom07').removeAttr('required')
+      $("#validationCustom09").attr("required", true);
+    });
+  });
+  $('.ck#check10').click(function(){
+    $(".row#text9").hide();
+    $(".row#text1").hide();
+    $(".row#text2").hide();
+    $(".row#text3").hide();
+    $(".row#text4").hide();
+    $(".row#text5").hide();
+    $(".row#text6").hide();
+    $(".row#text7").hide();
+    $(".row#text8").hide();
+    $(".row .btn-primary#submit").hide();
+  });
+  $(".form-check-label").css({"color":"black"});
+});
+</script>

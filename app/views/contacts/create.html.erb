@@ -1,0 +1,147 @@
+<%= link_to "Back to Home", "/", class: "home-id" %>
+<div class="container">
+  <h1> Please add your personal contacts and submit it below </h1>
+  <form class="needs-validation" novalidate action="save_personal_contacts" id="create" method="post" autocomplete="off">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom01">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom01" name="name" placeholder="Name" required>
+          <div class="invalid-feedback">
+            Please choose a Name.
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom02">Email</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom02" name="email" placeholder="Email" required>
+          <div class="invalid-feedback">
+            Please choose a Email.
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" id="original">
+        <label class="col-sm-2 col-form-label validationCustom03">Mobile</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom03" name="phone_number[]" placeholder="Mobile" required><br/>
+          <div class="invalid-feedback">
+            Please choose a Mobile.
+          </div>
+        </div>
+        <div class="offset-sm-2 col-sm-10">
+          <button type="button" class="btn btn-primary" id="phone">Add More</button>
+        </div>
+     </div>
+      <div id="copy">
+
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom04">Address</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom04" name="address[]" placeholder="Address" required><br/>
+          <div class="invalid-feedback">
+            Please choose a Address.
+          </div>
+        </div>
+        <div class="offset-sm-2 col-sm-10">
+          <button type="button" class="btn btn-primary" id="address">Add More</button>
+        </div>
+      </div>
+       <div id="copy1">
+
+       </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom05">City</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom05" name="city" placeholder="City" required>
+          <div class="invalid-feedback">
+            Please choose a City.
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom06">Street</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom06" name="street" placeholder="Street" required>
+          <div class="invalid-feedback">
+            Please choose a Street.
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom07">Region</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom07" name="region" placeholder="Region" required>
+          <div class="invalid-feedback">
+            Please choose a Region.
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom08">Country</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom08" name="country" placeholder="Country" required>
+          <div class="invalid-feedback">
+            Please choose a Country.
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label validationCustom09">Postal Code</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="validationCustom09" name="postal_code" placeholder="Postal Code" required>
+          <div class="invalid-feedback">
+            Please choose a Postal Code.
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="offset-sm-2 col-sm-10">
+          <button type="submit" class="btn btn-primary">Add Your Contacts</button>
+        </div>
+      </div>
+  </form>
+  <% if flash[:notice] %>
+  <div class="alert alert-warning">
+    <%= flash[:notice] %>
+    </div>
+  <% end %>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('.btn-primary#phone').click(function(){
+      $('#copy').after('<div class="form-group row">\
+      <label class="col-sm-2 col-form-label validationCustom03">Mobile</label>\
+      <div class="col-sm-10">\
+        <input type="text" class="form-control" id="validationCustom03" name="phone_number[]" placeholder="Mobile" required><br/>\
+        <div class="invalid-feedback">\
+          Please choose a Mobile.\
+        </div>\
+      </div>\
+        <div class="offset-sm-2 col-sm-10">\
+        <button type="button" class="btn btn-danger" id="phone">Remove</button>\
+      </div>\
+      </div>');
+    });
+    $('.btn-primary#address').click(function(){
+      $('#copy1').after('<div class="form-group row">\
+      <label class="col-sm-2 col-form-label validationCustom04">Address</label>\
+      <div class="col-sm-10">\
+        <input type="text" class="form-control" id="validationCustom04" name="address[]" placeholder="Address" required><br/>\
+        <div class="invalid-feedback">\
+          Please choose a Address.\
+        </div>\
+      </div>\
+        <div class="offset-sm-2 col-sm-10">\
+        <button type="button" class="btn btn-danger" id="address">Remove</button>\
+      </div>\
+      </div>');
+    });
+    $("body").on("click",".btn-danger#phone",function(){
+        $(this).closest('.row').remove();
+    });
+    $("body").on("click",".btn-danger#address",function(){
+        $(this).closest('.row').remove();
+    });
+});
+</script>

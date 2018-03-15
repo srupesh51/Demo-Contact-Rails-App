@@ -1,0 +1,105 @@
+<%= link_to "Back to Home", "/", class: "home-id" %>
+<div class="container">
+  <h1> Please edit your personal contacts and submit it below </h1>
+  <form class="needs-validation" novalidate action="edit_personal_contacts" method="post" autocomplete="off">
+  <% @contact.each do |contact| %>
+    <%= hidden_field_tag 'contact_id', contact[:contact_id] %>
+    <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom01">Name</label>
+    <div class="col-sm-10">
+      <%= text_field_tag "name", contact[:name], class: "form-control", id: "validationCustom01", placeholder: "Name", :required => true %>
+      <div class="invalid-feedback">
+        Please choose a Name.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom02">Email</label>
+    <div class="col-sm-10">
+      <%= text_field_tag "email", contact[:email], class: "form-control", placeholder: "Email", :required => true %>
+      <div class="invalid-feedback">
+        Please choose a Email.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row" id="original">
+    <label class="col-sm-2 col-form-label validationCustom03">Mobile</label>
+    <div class="col-sm-10">
+      <% contact[:phone_number].each do |phone_number| %>
+        <%= text_field_tag "phone_number[]", phone_number, class: "form-control", placeholder: "Mobile", :required => true %>
+      <% end %>
+      <div class="invalid-feedback">
+        Please choose a Mobile.
+      </div>
+    </div>
+ </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom04">Address</label>
+    <div class="col-sm-10">
+      <% contact[:address].each do |address| %>
+        <%= text_field_tag "address[]", address, class: "form-control", placeholder: "Address", :required => true %>
+      <% end %>
+      <div class="invalid-feedback">
+        Please choose a Address.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom05">City</label>
+    <div class="col-sm-10">
+      <%= text_field_tag "city", contact[:city], class: "form-control", id: "validationCustom05", placeholder: "City", :required => true %>
+      <div class="invalid-feedback">
+        Please choose a City.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom06">Street</label>
+    <div class="col-sm-10">
+      <%= text_field_tag "street", contact[:street], class: "form-control", id: "validationCustom06", placeholder: "Street", :required => true %>
+      <div class="invalid-feedback">
+        Please choose a Street.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom07">Region</label>
+    <div class="col-sm-10">
+      <%= text_field_tag "region", contact[:region], class: "form-control", id: "validationCustom07", placeholder: "Region", :required => true %>
+      <div class="invalid-feedback">
+        Please choose a Region.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom08">Country</label>
+    <div class="col-sm-10">
+       <%= text_field_tag "country", contact[:country], class: "form-control", id: "validationCustom08", placeholder: "Country", :required => true %>
+      <div class="invalid-feedback">
+        Please choose a Country.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label validationCustom09">Postal Code</label>
+    <div class="col-sm-10">
+      <%= text_field_tag "postal_code", contact[:postal_code], class: "form-control", id: "validationCustom09", placeholder: "Postal Code", :required => true %>
+      <div class="invalid-feedback">
+        Please choose a Postal Code.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="offset-sm-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">Edit Your Contacts</button>
+    </div>
+  </div>
+    <% end %>
+  </form>
+</div>
+  <% if flash[:notice] %>
+  <div class="alert alert-warning">
+    <%= flash[:notice] %>
+    </div>
+  <% end %>
+</div>
