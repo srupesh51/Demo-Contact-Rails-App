@@ -9,8 +9,8 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.5'
 # Use sqlite3 as the database for Active Record
-#gem 'sqlite3'
-gem 'pg'
+gem 'sqlite3'
+#gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -32,6 +32,7 @@ gem 'omniauth-google-oauth2', :git => "https://github.com/zquestz/omniauth-googl
 gem 'rubysl-open-uri', '2.0.0'
 gem 'figaro'
 ruby "2.5.0"
+gem "appengine", "~> 0.4.1"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password

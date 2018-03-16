@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180310135120) do
+ActiveRecord::Schema.define(version: 20180315204627) do
 
   create_table "contacts", primary_key: "contact_id", force: :cascade do |t|
     t.string "email"
