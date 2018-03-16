@@ -1,6 +1,7 @@
 class CreateContacts < ActiveRecord::Migration[5.1]
   def change
-    create_table :contacts, :primary_key => :contact_id do |t|
+    create_table :contacts, :id => false do |t|
+      t.primary_key :contact_id, :integer
       t.string :email
       t.string :name
       t.string :phone_number
@@ -10,8 +11,7 @@ class CreateContacts < ActiveRecord::Migration[5.1]
       t.string :region
       t.string :country
       t.string :postal_code
-      t.references :users
-      add_foreign_key :contacts, :users, column: :users_id, primary_key: "users_id"
     end
+    add_reference :contacts, :users, type: :integer
   end
 end

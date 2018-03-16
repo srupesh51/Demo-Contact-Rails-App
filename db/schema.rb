@@ -10,9 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180315204627) do
+ActiveRecord::Schema.define(version: 20180316161148) do
 
-  create_table "contacts", primary_key: "contact_id", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "contacts", primary_key: "contact_id", id: :serial, force: :cascade do |t|
     t.string "email"
     t.string "name"
     t.string "phone_number"
@@ -26,7 +29,7 @@ ActiveRecord::Schema.define(version: 20180315204627) do
     t.index ["users_id"], name: "index_contacts_on_users_id"
   end
 
-  create_table "users", primary_key: "users_id", force: :cascade do |t|
+  create_table "users", primary_key: "users_id", id: :serial, force: :cascade do |t|
     t.string "user_type"
     t.string "username"
     t.string "password"
